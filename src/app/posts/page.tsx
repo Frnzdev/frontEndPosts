@@ -1,5 +1,6 @@
 "use client";
 
+import RespostaEnv from "@/components/RespostaEnv";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HomeIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
@@ -14,6 +15,7 @@ type Post = {
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [enviado, setEnviado] = useState(false)
 
   useEffect(() => {
     fetch("https://api-posts-1obf.onrender.com/posts")
@@ -33,7 +35,8 @@ export default function PostsPage() {
       method: "DELETE",
     }).then(() => {
       setPosts(posts.filter((post) => post._id !== id));
-    });
+    })
+    .then(() => setEnviado(true))
   };
 
   if (loading)
@@ -87,6 +90,12 @@ export default function PostsPage() {
                     >
                       Excluir
                     </button>
+                    <Link
+                      href={`/edit/${post._id}`}
+                      className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-yellow-200 hover:bg-yellow-500/40 transition-all"
+                    >
+                      Editar
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -101,6 +110,10 @@ export default function PostsPage() {
           <PlusIcon size={32} className="text-white" />
         </Link>
       </div>
+      {enviado && (
+         <RespostaEnv color='red' onClick={() => setEnviado(false)} text={"Post excluído com sucesso!"} />
+      )}
+     
     </main>
   );
 }

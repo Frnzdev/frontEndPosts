@@ -35,6 +35,12 @@ export default async function Home() {
           >
             Ver Posts
           </Link>
+          <Link
+            href="/posts"
+            className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-xl hover:bg-white/20 transition-all shadow-md"
+          >
+            E
+          </Link>
         </div>
       </div>
     </main>
