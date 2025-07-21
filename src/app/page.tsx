@@ -10,7 +10,7 @@ export default async function Home() {
         </h1>
 
         <p className="text-lg text-white/80 mb-8 text-center">
-          Crie, visualize e exclua posts de forma simples e prática.
+          Crie, visualize, edite e exclua posts de forma simples e prática.
         </p>
 
         <Image
