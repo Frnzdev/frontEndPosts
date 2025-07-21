@@ -17,6 +17,8 @@ export default function PostsPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [enviado, setEnviado] = useState(false);
+  const [modalExclude, setModalExclude] = useState(false);
+  const [postToDelete, setPostToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("https://api-posts-1obf.onrender.com/posts")
@@ -59,6 +61,7 @@ export default function PostsPage() {
             Lista de Posts
           </h1>
         </div>
+
         <div className="flex items-center gap-4 w-full max-w-sm bg-white/10 border border-white/20 backdrop-blur-md p-3 rounded-xl shadow-md mb-4">
           <input
             type="text"
@@ -113,7 +116,10 @@ export default function PostsPage() {
                     </Link>
 
                     <button
-                      onClick={() => handleDelete(post._id)}
+                      onClick={() => {
+                        setPostToDelete(post._id);
+                        setModalExclude(true);
+                      }}
                       className="w-full sm:w-auto text-center px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-lg text-red-200 hover:bg-red-500/40 transition-all"
                     >
                       Excluir
@@ -132,6 +138,35 @@ export default function PostsPage() {
           <PlusIcon size={32} className="text-white" />
         </Link>
       </div>
+
+      {modalExclude && postToDelete && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white/10 border border-white/20 backdrop-blur-lg rounded-2xl p-8 shadow-2xl flex flex-col items-center gap-6 max-w-sm w-full text-white">
+            <p className="text-lg text-center">
+              Tem certeza que deseja excluir este post?
+            </p>
+            <div className="flex gap-4 w-full">
+              <button
+                onClick={() => {
+                  handleDelete(postToDelete);
+                  setModalExclude(false);
+                }}
+                className="flex-1 px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-xl hover:bg-red-500/40 transition-all text-red-200"
+              >
+                Sim, excluir
+              </button>
+              <button
+                onClick={() => {
+                  setModalExclude(false);
+                }}
+                className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-xl hover:bg-white/20 transition-all"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {enviado && (
         <RespostaEnv
